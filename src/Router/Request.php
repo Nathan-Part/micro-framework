@@ -1,13 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Framework312\Router;
 
 use Symfony\Component\HttpFoundation\{Request as SymfonyRequest, InputBag};
 
-class Request extends SymfonyRequest {
+class Request extends SymfonyRequest
+{
     private array $context = [];
 
-    public function __construct(mixed ...$args) {
+    public function __construct(mixed ...$args)
+    {
         parent::__construct($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
 
         $content_type = $this->headers->get('CONTENT_TYPE', '');
@@ -26,9 +30,8 @@ class Request extends SymfonyRequest {
         $this->context = array_map('strtolower', $args);
     }
 
-    public function fromContext(string $key): mixed {
+    public function fromContext(string $key): mixed
+    {
         return $this->context[strtolower($key)] ?? null;
     }
 }
-
-?>
