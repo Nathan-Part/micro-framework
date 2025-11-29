@@ -6,7 +6,7 @@ namespace Framework312\Router\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class HttpMethodNotImplemented extends Exception
+class HttpMethodNotImplemented extends \Exception
 {
     public function __construct(string $classname, string $method)
     {

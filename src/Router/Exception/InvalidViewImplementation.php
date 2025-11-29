@@ -6,7 +6,7 @@ namespace Framework312\Router\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class InvalidViewImplementation extends Exception
+class InvalidViewImplementation extends \Exception
 {
     public function __construct(string $classname)
     {
