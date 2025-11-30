@@ -6,6 +6,7 @@ namespace Framework312\Router;
 
 use Framework312\Router\Exception as RouterException;
 use Framework312\Template\Renderer;
+use Framework312\Router\View\TemplateView; // Import de TemplateView
 use Framework312\Template\HTMLView;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,10 +28,24 @@ class Route
         $this->view = $view;
     }
 
-    public function getView(): object
+    // Ajout du Renderer en paramètre
+    public function getView(?Renderer $engine = null): object
     {
         // $this->view contient le nom complet de la classe (ex: Framework312\Router\View\HelloView)
         $classname = $this->view;
+        $reflect = new \ReflectionClass($classname); // Réflexion nécessaire
+
+        // Si la View est une TemplateView, elle a besoin du Renderer et du nom du template
+        if ($reflect->isSubclassOf(TemplateView::class) && $engine !== null) {
+            // Déduire le nom du template par défaut basé sur le nom de la classe
+            // Exemple: BookView => 'Book/index.twig'
+            $viewShortName = $reflect->getShortName();
+            // On utilise index.twig par défaut dans le dossier de la vue (Book/index.twig)
+            $templateName = $viewShortName . '/index.twig';
+
+            // Instanciation de TemplateView avec les dépendances
+            return new $classname($engine, $templateName);
+        }
 
         // On instancie simplement la vue (pour HTMLView / JSONView ça suffit)
         return new $classname();
@@ -65,37 +80,37 @@ class SimpleRouter implements Router
     {
         // 1. Créer la Request
         $request = Request::createFromGlobals();
-        
+
         // 2. Récupérer le chemin demandé
         $path = $request->getPathInfo();
-        
+
         $matchedRoute = null;
         $params = [];
-        
+
         // 3. Parcourir toutes les routes pour trouver un match (avec ou sans :param)
         foreach ($this->routes as $pattern => $route) {
             $params = $this->matchPath($pattern, $path);
-            
+
             if ($params !== null) {
                 $matchedRoute = $route;
                 break;
             }
         }
-        
+
         // 4. Si aucune route ne matche → 404 simple
         if ($matchedRoute === null) {
             echo "Route non trouvée";
             return;
         }
-        
+
         // 5. Injecter les paramètres dans la Request (id, slug, etc.)
         foreach ($params as $name => $value) {
             $request->attributes->set($name, $value);
         }
-        
-        // 6. Récupérer la View via Route
-        $view = $matchedRoute->getView();
-        
+
+        // 6. Récupérer la View via Route, en passant le Renderer
+        $view = $matchedRoute->getView($this->engine); // MODIFICATION ICI
+
         // 7. `render` la vue et l'envoyer en réponse
         $response = $view->render($request);
         $response->send();
