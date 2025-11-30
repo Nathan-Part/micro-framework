@@ -12,7 +12,7 @@ use Framework312\Router\View\HelloView;
 use Framework312\Router\View\BookView;
 
 class Hello extends TemplateView {
-  public function template(Request $request): string
+  public function template(): string
   {
     return 'index.twig';
   }
@@ -24,7 +24,7 @@ class Hello extends TemplateView {
 }
 
 class Book extends TemplateView {
-  public function template(Request $request): string
+  public function template(): string
   {
     return 'index.twig';
   }
