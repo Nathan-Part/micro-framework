@@ -36,7 +36,7 @@ class Route
         return new $classname();
     }
 
-    public function call(Request $request, ?Renderer $engine): Response
+    public function call(Request $request, ?Renderer $engine): void // Response
     {
         // TODO
     }
@@ -65,34 +65,34 @@ class SimpleRouter implements Router
     {
         // 1. Créer la Request
         $request = Request::createFromGlobals();
-
+        
         // 2. Récupérer le chemin demandé
         $path = $request->getPathInfo();
-
+        
         $matchedRoute = null;
         $params = [];
-
+        
         // 3. Parcourir toutes les routes pour trouver un match (avec ou sans :param)
         foreach ($this->routes as $pattern => $route) {
             $params = $this->matchPath($pattern, $path);
-
+            
             if ($params !== null) {
                 $matchedRoute = $route;
                 break;
             }
         }
-
+        
         // 4. Si aucune route ne matche → 404 simple
         if ($matchedRoute === null) {
             echo "Route non trouvée";
             return;
         }
-
+        
         // 5. Injecter les paramètres dans la Request (id, slug, etc.)
         foreach ($params as $name => $value) {
             $request->attributes->set($name, $value);
         }
-
+        
         // 6. Récupérer la View via Route
         $view = $matchedRoute->getView();
 
