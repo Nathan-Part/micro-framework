@@ -27,13 +27,13 @@ class Route
         $this->view = $view;
     }
 
-    public function getView(): object
+    public function getView(Renderer $renderer): object
     {
         // $this->view contient le nom complet de la classe (ex: Framework312\Router\View\HelloView)
         $classname = $this->view;
 
-        // On instancie simplement la vue (pour HTMLView / JSONView ça suffit)
-        return new $classname();
+        // On instancie la vue
+        return new $classname($renderer);
     }
 
     public function call(Request $request, ?Renderer $engine): void // Response
@@ -93,8 +93,8 @@ class SimpleRouter implements Router
             $request->attributes->set($name, $value);
         }
         
-        // 6. Récupérer la View via Route
-        $view = $matchedRoute->getView();
+        // 6. Récupérer la View via Route, avec le Renderer ($this->engine)
+        $view = $matchedRoute->getView($this->engine);
         
         // 7. `render` la vue et l'envoyer en réponse
         $response = $view->render($request);

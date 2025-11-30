@@ -1,5 +1,4 @@
 <?php
-// cette page juste un exemple afin de comprendre mieux les differents concepte a comprendre
 
 declare(strict_types=1);
 
@@ -23,7 +22,7 @@ class TwigRenderer implements Renderer
      * @param string $template name of the template to use
      * @return string the compiled template
      */
-    public function render(mixed $data, string $template): string
+    public function render(string $template, mixed $data): string
     {
         return $this->twig->render($template, $data);
     }

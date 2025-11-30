@@ -6,6 +6,6 @@ namespace Framework312\Template;
 
 interface Renderer
 {
-    public function render(mixed $data, string $template): string;
+    public function render(string $template, mixed $data): string;
     public function register(string $tag);
 }

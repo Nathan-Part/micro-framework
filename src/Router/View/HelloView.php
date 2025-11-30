@@ -1,5 +1,5 @@
 <?php
-// cette page juste un exemple afin de comprendre mieux les differents concepte a comprendre
+
 declare(strict_types=1);
 
 namespace Framework312\Router\View;
