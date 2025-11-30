@@ -47,11 +47,11 @@ abstract class TemplateView extends BaseView
         $templateName = $this->template($request);
 
         // 5. Rendu du template avec data
-        $html = $this->renderer->render($templateName, $data);
+        $content = $this->renderer->render($templateName, $data);
 
         // 6. Retourner la Response
-        return new Response($html, 200, [
-            'Content-Type' => 'text/html',
+        return new Response($content, 200, [
+            'Content-Type' => 'unknown',
         ]);
     }
 }

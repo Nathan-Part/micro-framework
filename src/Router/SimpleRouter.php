@@ -56,7 +56,7 @@ class SimpleRouter implements Router
         // TODO
     }
 
-    public function register(string $path, string|object $class_or_view)
+    public function register(string $path, string|object $class_or_view): void
     {
         $this->routes[$path] = new Route($class_or_view);
     }
@@ -95,8 +95,8 @@ class SimpleRouter implements Router
         
         // 6. Récupérer la View via Route
         $view = $matchedRoute->getView();
-
-        // 7. Appeler render() et envoyer la réponse
+        
+        // 7. `render` la vue et l'envoyer en réponse
         $response = $view->render($request);
         $response->send();
     }
