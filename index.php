@@ -4,10 +4,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '\\vendor\\autoload.php';
 
+use Framework312\Router\Request;
 use Framework312\Template\TwigRenderer;
 use Framework312\Router\SimpleRouter;
+use Framework312\Router\View\TemplateView;
 use Framework312\Router\View\HelloView;
 use Framework312\Router\View\BookView;
 
