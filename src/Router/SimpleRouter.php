@@ -6,6 +6,7 @@ namespace Framework312\Router;
 
 use Framework312\Router\Exception as RouterException;
 use Framework312\Template\Renderer;
+use Framework312\Router\View\TemplateView; // Import de TemplateView
 use Framework312\Template\HTMLView;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -65,29 +66,29 @@ class SimpleRouter implements Router
     {
         // 1. Créer la Request
         $request = Request::createFromGlobals();
-        
+
         // 2. Récupérer le chemin demandé
         $path = $request->getPathInfo();
-        
+
         $matchedRoute = null;
         $params = [];
-        
+
         // 3. Parcourir toutes les routes pour trouver un match (avec ou sans :param)
         foreach ($this->routes as $pattern => $route) {
             $params = $this->matchPath($pattern, $path);
-            
+
             if ($params !== null) {
                 $matchedRoute = $route;
                 break;
             }
         }
-        
+
         // 4. Si aucune route ne matche → 404 simple
         if ($matchedRoute === null) {
             echo "Route non trouvée";
             return;
         }
-        
+
         // 5. Injecter les paramètres dans la Request (id, slug, etc.)
         foreach ($params as $name => $value) {
             $request->attributes->set($name, $value);
