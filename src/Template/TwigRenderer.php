@@ -5,9 +5,7 @@ declare(strict_types=1);
 
 namespace Framework312\Template;
 
-use Framework312\Template\Twig;
-
-class DummyRenderer implements Renderer
+class TwigRenderer implements Renderer
 {
     private string $templatesFolder;
     private \Twig\Environment $twig;

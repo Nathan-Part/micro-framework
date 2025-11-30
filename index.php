@@ -6,13 +6,13 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Framework312\Template\DummyRenderer;
+use Framework312\Template\TwigRenderer;
 use Framework312\Router\SimpleRouter;
 use Framework312\Router\View\HelloView;
 use Framework312\Router\View\BookView;
 
 // 1. Créer un renderer fictif
-$renderer = new DummyRenderer(__DIR__ . '\\templates');
+$renderer = new TwigRenderer(__DIR__ . '\\templates');
 
 // 2. Créer le router
 $router = new SimpleRouter($renderer);
